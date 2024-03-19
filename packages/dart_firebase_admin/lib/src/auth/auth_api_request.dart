@@ -714,6 +714,7 @@ abstract class _AbstractAuthRequestHandler {
     final mfa = properties.multiFactor?.toMfaInfo();
 
     final request = auth1.GoogleCloudIdentitytoolkitV1SetAccountInfoRequest(
+      localId: uid,
       deleteAttribute: deleteAttribute.isEmpty ? null : deleteAttribute,
       deleteProvider: deleteProvider,
       disableUser: properties.disabled,
