@@ -19,13 +19,13 @@ jobs:
         working-directory: packages/dart_firebase_admin
 
     steps:
-      - uses: actions/checkout@v3.1.0
+      - uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8 # v3.1.0
         with:
           fetch-depth: 2
-      - uses: actions/setup-node@v4
-      - uses: subosito/flutter-action@v2.7.1
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+      - uses: dart-lang/setup-dart@6afc89df92d6eb3834022f73cd65adc8cdfcb92d # v1
         with:
-          channel: master
+          sdk: stable
       - name: Add pub cache bin to PATH
         run: echo "$HOME/.pub-cache/bin" >> $GITHUB_PATH
       - name: Add pub cache to PATH
