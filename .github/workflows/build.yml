@@ -23,7 +23,7 @@ jobs:
         with:
           fetch-depth: 2
       - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
-      - uses: subosito/flutter-action@1e6ee87cb840500837bcd50a667fb28815d8e310 # v2.7.1
+      - uses: ./.github/actions/setup-flutter
         with:
           channel: master
       - name: Add pub cache bin to PATH

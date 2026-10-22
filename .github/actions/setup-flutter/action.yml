@@ -1,0 +1,55 @@
+name: 'Flutter action'
+description: 'Setup your runner with Flutter environment'
+author: 'Alif Rachmawadi'
+branding:
+  icon: 'maximize'
+  color: 'blue'
+inputs:
+  flutter-version:
+    description: 'The Flutter version to make available on the path'
+    required: false
+    default: 'any'
+  channel:
+    description: 'The Flutter build release channel'
+    required: false
+    default: 'stable'
+  cache:
+    description: 'Cache the Flutter SDK'
+    required: false
+    default: false
+  cache-key:
+    description: 'Identifier for the Flutter SDK cache'
+    required: false
+    default: 'flutter-:os:-:channel:-:version:-:arch:-:hash:'
+  cache-path:
+    description: 'Flutter SDK cache path'
+    required: false
+    default: '${{ runner.tool_cache }}/flutter/:channel:-:version:-:arch:'
+  architecture:
+    description: 'The architecture of Flutter SDK executable (x64 or arm64)'
+    required: false
+    default: '${{ runner.arch }}'
+outputs:
+  cache-path:
+    value: '${{ steps.flutter-action.outputs.cache-path }}'
+  cache-key:
+    value: '${{ steps.flutter-action.outputs.cache-key }}'
+  channel:
+    value: '${{ steps.flutter-action.outputs.channel }}'
+  version:
+    value: '${{ steps.flutter-action.outputs.version }}'
+  architecture:
+    value: '${{ steps.flutter-action.outputs.architecture }}'
+runs:
+  using: 'composite'
+  steps:
+    - id: flutter-action
+      run: $GITHUB_ACTION_PATH/setup.sh -p -c '${{ inputs.cache-path }}' -k '${{ inputs.cache-key }}' -n '${{ inputs.flutter-version }}' -a '${{ inputs.architecture }}' ${{ inputs.channel }}
+      shell: bash
+    - if: ${{ inputs.cache == 'true' }}
+      uses: actions/cache@caa296126883cff596d87d8935842f9db880ef25 # v5
+      with:
+        path: ${{ steps.flutter-action.outputs.cache-path }}
+        key: ${{ steps.flutter-action.outputs.cache-key }}
+    - run: $GITHUB_ACTION_PATH/setup.sh -c '${{ steps.flutter-action.outputs.cache-path }}' -n '${{ steps.flutter-action.outputs.version }}' -a '${{ steps.flutter-action.outputs.architecture }}' ${{ steps.flutter-action.outputs.channel }}
+      shell: bash
